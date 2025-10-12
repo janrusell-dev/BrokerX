@@ -3,29 +3,60 @@ package main
 import (
 	"log"
 
-	"github.com/gin-gonic/gin"
 	"github.com/janrusell-dev/brokerx/internal/broker"
-	"github.com/janrusell-dev/brokerx/internal/handlers"
-	"github.com/janrusell-dev/brokerx/internal/middleware"
+	"github.com/janrusell-dev/brokerx/internal/routes"
 	"github.com/janrusell-dev/brokerx/internal/services"
+	"github.com/janrusell-dev/brokerx/internal/utils"
 )
 
 func main() {
-	r := gin.Default()
-	r.Use(middleware.CORSMiddleware())
+	utils.LogInfo("Initializing BrokerX...")
 
-	//initialize broker and metrics
+	//Initialize core services
 	messageBroker := broker.NewBroker()
 	metrics := services.NewMetricsService()
 
-	handlers.RegisterPublishRoutes(r, messageBroker, metrics)
-	handlers.RegisterSubscribeRoutes(r, messageBroker, metrics)
-	handlers.RegisterMetricsRoutes(r, metrics)
+	utils.LogSuccess("Broker and metrics service initialized")
 
+	// Start message simulator in background
 	go services.StartSimulator(messageBroker, metrics)
+	utils.LogInfo("Message simulator started")
 
-	log.Printf("🚀 BrokerX backend running on http://localhost:8080")
+	// Setup router with all handlers
+	r := routes.SetupRouter(messageBroker, metrics)
+
+	// Print startup banner
+	printBanner()
+
+	utils.LogSuccess("BrokerX backend running at http://localhost:8080")
+
+	// Start server
 	if err := r.Run(":8080"); err != nil {
 		log.Fatalf("Server failed: %v", err)
 	}
+}
+
+func printBanner() {
+	banner := `
+╔══════════════════════════════════════════════════════╗
+║                                                      ║
+║        🚀 BrokerX Message Broker v1.0                ║
+║                                                      ║
+║        A lightweight, real-time message broker       ║
+║                                                      ║
+╚══════════════════════════════════════════════════════╝
+
+📡 Available Endpoints:
+   GET  /health              - Health check
+   POST /publish             - Publish message to topic
+   GET  /subscribe?topic=x   - Subscribe to topic (WebSocket)
+   GET  /metrics             - Get system metrics
+   POST /metrics/reset       - Reset metrics
+   GET  /metrics/latency     - Get latency history
+   GET  /topics              - List all active topics
+   GET  /topics/:topic       - Get topic information
+   GET  /topics/info/all     - Get all topics info
+
+`
+	log.Print(banner)
 }
