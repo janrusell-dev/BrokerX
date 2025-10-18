@@ -458,7 +458,7 @@ var upgrader = websocket.Upgrader{
 - **Memory usage**: ~50MB base + ~1KB per active subscriber
 - **Concurrent connections**: Limited by OS (typically 1000+)
 
-## 🚀 Production Enhancements
+<!--  ## 🚀 Production Enhancements
 
 For production use, consider adding:
 
@@ -471,9 +471,9 @@ For production use, consider adding:
 7. **Horizontal scaling**: Multiple broker instances
 8. **Load balancing**: Nginx or HAProxy
 9. **Monitoring**: Prometheus + Grafana
-10. **Message encryption**: TLS for WebSocket connections
+10. **Message encryption**: TLS for WebSocket connections -->
 
-## 🤝 Contributing
+## 🤝 Contributing 
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -483,7 +483,7 @@ This project is licensed under the MIT License.
 
 ## 👨‍💻 Author
 
-Built with ❤️ by Jan Russell
+Built with ❤️ by Jan Rusell
 
 ## 🙏 Acknowledgments
 
@@ -494,4 +494,5 @@ Built with ❤️ by Jan Russell
 ---
 
 **Note**: This is a demo/educational project. For production message brokers, consider using established solutions like RabbitMQ, Apache Kafka, or NATS.
+
 
