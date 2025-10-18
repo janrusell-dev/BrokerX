@@ -1,6 +1,6 @@
-# 🚀 BrokerX - Lightweight Message Broker
+# 🚀 BrokerX - Lightweight Message Broker(In Progress)
 
-A production-ready, real-time message broker built with **Go** and **Next.js**. BrokerX demonstrates modern backend architecture with concurrent programming, WebSocket communication, and real-time metrics visualization.
+Real-time message broker built with **Go** and **Next.js**. BrokerX demonstrates modern backend architecture with concurrent programming, WebSocket communication, and real-time metrics visualization.
 
 ## ✨ Features
 
@@ -494,3 +494,4 @@ Built with ❤️ by Jan Russell
 ---
 
 **Note**: This is a demo/educational project. For production message brokers, consider using established solutions like RabbitMQ, Apache Kafka, or NATS.
+
