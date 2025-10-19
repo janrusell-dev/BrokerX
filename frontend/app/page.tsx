@@ -69,7 +69,7 @@ export default function Home() {
 
 
   return (
-   <main className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-900 to-black text-white p-6 space-y-8">
+     <main className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-900 to-black text-white p-6 space-y-8">
       <div className="flex items-center justify-between">
         <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
           BrokerX Dashboard
@@ -154,7 +154,7 @@ export default function Home() {
               </LineChart>
             </ResponsiveContainer>
           </div>
-
+                  
           {/* Live Logs */}
           <LiveLog />
         </div>

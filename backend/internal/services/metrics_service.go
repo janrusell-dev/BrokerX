@@ -6,11 +6,11 @@ import (
 )
 
 type Metrics struct {
-	TotalMessages     int64                    `json:"total_messages"`
-	AvgLatency        float64                  `json:"avg_latency"`
-	MessagePerTopic   map[string]int           `json:"messages_per_topic"`
-	ActiveSubscribers int64                    `json:"active_subscribers"`
-	LatencyHistory    []map[string]interface{} `json:"latency_history"`
+	TotalMessages     int64                    `json:"totalMessages"`
+	AvgLatency        float64                  `json:"avgLatency"`
+	MessagePerTopic   map[string]int           `json:"topicMetrics"`
+	ActiveSubscribers int64                    `json:"activeSubscribers"`
+	LatencyHistory    []map[string]interface{} `json:"latencyHistory"`
 }
 
 type MetricsService struct {
@@ -40,7 +40,7 @@ func (m *MetricsService) RecordMessage(topic string, latencyMs int64) {
 	}
 
 	m.data.LatencyHistory = append(m.data.LatencyHistory, map[string]interface{}{
-		"timestamp": time.Now().Format("15:04:05"),
+		"timestamp": time.Now().Format(time.RFC3339),
 		"latency":   latencyMs,
 	})
 }
@@ -49,6 +49,7 @@ func (m *MetricsService) GetMetrics() Metrics {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	return m.data
+
 }
 func (m *MetricsService) IncrementSubscribers() {
 	m.mu.Lock()

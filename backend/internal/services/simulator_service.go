@@ -18,7 +18,7 @@ func StartSimulator(b *broker.Broker, m *MetricsService) {
 
 	for {
 		/// Pick random topic and sender
-		topic := topics[rand.Intn(len(senders))]
+		topic := topics[rand.Intn(len(topics))]
 		sender := senders[rand.Intn(len(senders))]
 
 		msg := broker.Message{
@@ -31,7 +31,7 @@ func StartSimulator(b *broker.Broker, m *MetricsService) {
 		// Measure publish latency
 		start := time.Now()
 		b.Publish(topic, msg)
-		latency := time.Since(start).Milliseconds()
+		latency := time.Since(start).Microseconds()
 		// Record metrics
 		m.RecordMessage(topic, latency)
 

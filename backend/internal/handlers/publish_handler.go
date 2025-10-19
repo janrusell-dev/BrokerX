@@ -28,7 +28,7 @@ func RegisterPublishRoutes(r *gin.Engine, b *broker.Broker, m *services.MetricsS
 
 		start := time.Now()
 		b.Publish(req.Topic, msg)
-		latency := time.Since(start).Milliseconds()
+		latency := time.Since(start).Microseconds()
 
 		m.RecordMessage(req.Topic, latency)
 		utils.LogEvent("Published message to topic: " + req.Topic)
@@ -36,6 +36,8 @@ func RegisterPublishRoutes(r *gin.Engine, b *broker.Broker, m *services.MetricsS
 		ctx.JSON(http.StatusOK, gin.H{
 			"status":  "ok",
 			"message": "Message published",
+			"topic":   req.Topic,
+			"latency": latency,
 		})
 
 	})

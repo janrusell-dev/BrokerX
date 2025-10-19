@@ -21,6 +21,7 @@ func SetupRouter(b *broker.Broker, m *services.MetricsService) *gin.Engine {
 	handlers.RegisterMetricsRoutes(r, m)
 	handlers.RegisterPublishRoutes(r, b, m)
 	handlers.RegisterSubscribeRoutes(r, b, m)
+	handlers.RegisterTopicRoutes(r, b)
 
 	// Health check endpoint
 	r.GET("/health", func(c *gin.Context) {
