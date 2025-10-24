@@ -3,13 +3,13 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/janrusell-dev/brokerx/internal/broker"
-	"github.com/janrusell-dev/brokerx/internal/handlers"
 	"github.com/janrusell-dev/brokerx/internal/middleware"
 	"github.com/janrusell-dev/brokerx/internal/services"
 )
 
 func SetupRouter(b *broker.Broker, m *services.MetricsService) *gin.Engine {
 	r := gin.New()
+	r.SetTrustedProxies([]string{"127.0.0.1"})
 
 	r.Use(
 		middleware.Recovery(),
@@ -18,13 +18,13 @@ func SetupRouter(b *broker.Broker, m *services.MetricsService) *gin.Engine {
 	)
 
 	// Register all route groups
-	handlers.RegisterMetricsRoutes(r, m)
-	handlers.RegisterPublishRoutes(r, b, m)
-	handlers.RegisterSubscribeRoutes(r, b, m)
-	handlers.RegisterTopicRoutes(r, b)
+	RegisterMetricsRoutes(r, m)
+	RegisterPublishRoutes(r, b, m)
+	RegisterSubscribeRoutes(r, b, m)
+	RegisterTopicRoutes(r, b)
 
 	// Health check endpoint
-	r.GET("/health", func(c *gin.Context) {
+	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"status":  "ok",
 			"service": "BrokerX",

@@ -11,8 +11,8 @@ import (
 	"github.com/janrusell-dev/brokerx/internal/utils"
 )
 
-func RegisterPublishRoutes(r *gin.Engine, b *broker.Broker, m *services.MetricsService) {
-	r.POST("/publish", func(ctx *gin.Context) {
+func PublishMessageHandler(b *broker.Broker, m *services.MetricsService) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
 		var req dto.PublishRequest
 		if err := ctx.ShouldBindJSON(&req); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -40,5 +40,5 @@ func RegisterPublishRoutes(r *gin.Engine, b *broker.Broker, m *services.MetricsS
 			"latency": latency,
 		})
 
-	})
+	}
 }

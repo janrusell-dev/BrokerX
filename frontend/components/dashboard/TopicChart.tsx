@@ -1,11 +1,21 @@
 "use client";
 
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 export function TopicChart({ data }: { data: any[] }) {
   return (
     <div className="bg-neutral-900 p-4 rounded-2xl shadow-lg">
-      <h2 className="text-lg font-semibold text-emerald-400 mb-2">Messages per Topic</h2>
+      <h2 className="text-lg font-semibold text-emerald-400 mb-2">
+        Messages per Topic
+      </h2>
       <ResponsiveContainer width="100%" height={250}>
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" stroke="#333" />

@@ -11,18 +11,22 @@ type Metrics struct {
 	MessagePerTopic   map[string]int           `json:"topicMetrics"`
 	ActiveSubscribers int64                    `json:"activeSubscribers"`
 	LatencyHistory    []map[string]interface{} `json:"latencyHistory"`
+	LastReset         time.Time                `json:"lastReset"`
 }
 
 type MetricsService struct {
-	mu   sync.Mutex
-	data Metrics
+	mu        sync.Mutex
+	data      Metrics
+	startTime time.Time
 }
 
 func NewMetricsService() *MetricsService {
 	return &MetricsService{
 		data: Metrics{
 			MessagePerTopic: make(map[string]int),
+			LastReset:       time.Now(),
 		},
+		startTime: time.Now(),
 	}
 }
 
@@ -63,4 +67,27 @@ func (m *MetricsService) DecrementSubscribers() {
 	if m.data.ActiveSubscribers > 0 {
 		m.data.ActiveSubscribers--
 	}
+}
+
+func (m *MetricsService) ResetMetrics() {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	m.data.TotalMessages = 0
+	m.data.AvgLatency = 0
+	m.data.MessagePerTopic = make(map[string]int)
+	m.data.ActiveSubscribers = 0
+	m.data.LatencyHistory = []map[string]interface{}{}
+	m.data.LastReset = time.Now()
+}
+
+func (m *MetricsService) MessageRate() float64 {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	duration := time.Since(m.data.LastReset).Seconds()
+	if duration == 0 {
+		return 0
+	}
+	return float64(m.data.TotalMessages) / duration
 }

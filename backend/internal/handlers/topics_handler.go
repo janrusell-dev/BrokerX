@@ -7,14 +7,16 @@ import (
 	"github.com/janrusell-dev/brokerx/internal/broker"
 )
 
-func RegisterTopicRoutes(r *gin.Engine, b *broker.Broker) {
-	r.GET("/topics", func(ctx *gin.Context) {
+func GetTopicsHandler(b *broker.Broker) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{
 			"topics": b.GetTopics(),
 		})
-	})
+	}
+}
 
-	r.GET("/topics/:topic", func(c *gin.Context) {
+func GetTopicInfoHandler(b *broker.Broker) gin.HandlerFunc {
+	return func(c *gin.Context) {
 		topic := c.Param("topic")
 		info := b.GetTopicInfo(topic)
 
@@ -27,11 +29,13 @@ func RegisterTopicRoutes(r *gin.Engine, b *broker.Broker) {
 		}
 
 		c.JSON(http.StatusOK, info)
-	})
+	}
+}
 
-	r.GET("/topics/info/all", func(c *gin.Context) {
+func GetAllTopicsInfoHandler(b *broker.Broker) gin.HandlerFunc {
+	return func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"topics": b.GetAllTopicsInfo(),
 		})
-	})
+	}
 }
