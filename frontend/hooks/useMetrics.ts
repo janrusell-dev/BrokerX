@@ -1,6 +1,6 @@
 import { api } from "@/lib/api";
 import { Message, MetricsResponse } from "@/types/common";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useMetrics(refreshInterval: number = 1000){
     const [metrics, setMetrics] = useState<MetricsResponse | null>(null)
@@ -22,7 +22,7 @@ export function useMetrics(refreshInterval: number = 1000){
             }
         }
         fetchMetrics();
-        const interval = setInterval(fetchMetrics, refreshInterval);
+        const interval = setInterval(fetchMetrics, refreshInterval + 500);
 
         return () => clearInterval(interval);
     }, [refreshInterval]);
@@ -40,7 +40,17 @@ export function useMetrics(refreshInterval: number = 1000){
         }
     }, []);
 
-    return { metrics, loading, error, refresh };
+    const resetMetrics = useCallback(async () => {
+        try{
+            await api.resetMetrics();
+            await refresh();
+        } catch (err) {
+            setError (err as Error);
+            console.error("Failed to reset metrics:", err)
+        }
+    }, [refresh])
+
+    return { metrics, loading, error, refresh, resetMetrics };
 }
 
 

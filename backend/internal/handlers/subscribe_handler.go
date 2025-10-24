@@ -18,8 +18,8 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
-func RegisterSubscribeRoutes(r *gin.Engine, b *broker.Broker, m *services.MetricsService) {
-	r.GET("/subscribe", func(ctx *gin.Context) {
+func SubscribeHandler(b *broker.Broker, m *services.MetricsService) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
 		topic := ctx.Query("topic")
 		if topic == "" {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Missing topic"})
@@ -58,7 +58,6 @@ func RegisterSubscribeRoutes(r *gin.Engine, b *broker.Broker, m *services.Metric
 				break
 			}
 		}
-
 		utils.LogInfo("WebSocket disconnected from topic: %s", topic)
-	})
+	}
 }

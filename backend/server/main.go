@@ -18,12 +18,12 @@ func main() {
 
 	utils.LogSuccess("Broker and metrics service initialized")
 
+	// Setup router with all handlers
+	r := routes.SetupRouter(messageBroker, metrics)
+
 	// Start message simulator in background
 	go services.StartSimulator(messageBroker, metrics)
 	utils.LogInfo("Message simulator started")
-
-	// Setup router with all handlers
-	r := routes.SetupRouter(messageBroker, metrics)
 
 	// Print startup banner
 	printBanner()
