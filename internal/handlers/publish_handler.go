@@ -4,11 +4,11 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/brokerx/internal/broker"
+	"github.com/brokerx/internal/dto"
+	"github.com/brokerx/internal/services"
+	"github.com/brokerx/internal/utils"
 	"github.com/gin-gonic/gin"
-	"github.com/janrusell-dev/brokerx/internal/broker"
-	"github.com/janrusell-dev/brokerx/internal/dto"
-	"github.com/janrusell-dev/brokerx/internal/services"
-	"github.com/janrusell-dev/brokerx/internal/utils"
 )
 
 func PublishMessageHandler(b *broker.Broker, m *services.MetricsService) gin.HandlerFunc {

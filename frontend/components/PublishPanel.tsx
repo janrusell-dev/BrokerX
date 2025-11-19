@@ -29,7 +29,7 @@ export function PublishPanel() {
       setStatus(`✓ Sent (${response.latency}ms)`);
       setMessage("");
       setTimeout(() => setStatus(""), 2000);
-    } catch (error) {
+    } catch {
       setStatus("✗ Failed");
       setTimeout(() => setStatus(""), 2000);
     }

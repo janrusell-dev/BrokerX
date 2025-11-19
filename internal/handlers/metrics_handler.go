@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/brokerx/internal/services"
 	"github.com/gin-gonic/gin"
-	"github.com/janrusell-dev/brokerx/internal/services"
 )
 
 type MetricsHandler struct {

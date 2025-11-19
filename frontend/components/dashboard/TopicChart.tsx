@@ -10,7 +10,12 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export function TopicChart({ data }: { data: any[] }) {
+type TopicData = {
+  topic: string;
+  count: number;
+};
+
+export function TopicChart({ data }: { data: TopicData[] }) {
   return (
     <div className="bg-neutral-900 p-4 rounded-2xl shadow-lg">
       <h2 className="text-lg font-semibold text-emerald-400 mb-2">

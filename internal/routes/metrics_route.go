@@ -1,9 +1,9 @@
 package routes
 
 import (
+	"github.com/brokerx/internal/handlers"
+	"github.com/brokerx/internal/services"
 	"github.com/gin-gonic/gin"
-	"github.com/janrusell-dev/brokerx/internal/handlers"
-	"github.com/janrusell-dev/brokerx/internal/services"
 )
 
 func RegisterMetricsRoutes(r *gin.Engine, s *services.MetricsService) {

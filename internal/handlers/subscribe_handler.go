@@ -3,11 +3,11 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/brokerx/internal/broker"
+	"github.com/brokerx/internal/services"
+	"github.com/brokerx/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"github.com/janrusell-dev/brokerx/internal/broker"
-	"github.com/janrusell-dev/brokerx/internal/services"
-	"github.com/janrusell-dev/brokerx/internal/utils"
 )
 
 var upgrader = websocket.Upgrader{

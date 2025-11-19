@@ -3,10 +3,10 @@ package main
 import (
 	"log"
 
-	"github.com/janrusell-dev/brokerx/internal/broker"
-	"github.com/janrusell-dev/brokerx/internal/routes"
-	"github.com/janrusell-dev/brokerx/internal/services"
-	"github.com/janrusell-dev/brokerx/internal/utils"
+	"github.com/brokerx/internal/broker"
+	"github.com/brokerx/internal/routes"
+	"github.com/brokerx/internal/services"
+	"github.com/brokerx/internal/utils"
 )
 
 func main() {
