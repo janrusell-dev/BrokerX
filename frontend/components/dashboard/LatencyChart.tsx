@@ -10,7 +10,12 @@ import {
   CartesianGrid,
 } from "recharts";
 
-export function LatencyChart({ data }: { data: any[] }) {
+type LatencyData = {
+  time: string;
+  latency: number;
+};
+
+export function LatencyChart({ data }: { data: LatencyData[] }) {
   return (
     <div className="bg-neutral-900 p-4 rounded-2xl shadow-lg">
       <h2 className="text-lg font-semibold text-emerald-400 mb-2">

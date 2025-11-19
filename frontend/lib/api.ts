@@ -1,5 +1,4 @@
 import { LatencyPoint, Message, MetricsResponse, PublishRequest, PublishResponse, TopicInfo } from "@/types/common";
-import { url } from "inspector";
 
 // Centralized API service for BrokerX backend
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
@@ -164,7 +163,7 @@ class BrokerXAPI {
       onDisconnect?.();
     };
 
-    ws.onerror = (event) => {
+    ws.onerror = () => {
       isOpen = false;
       // WebSocket errors don't provide much detail in the browser
       // Only log if we never successfully connected

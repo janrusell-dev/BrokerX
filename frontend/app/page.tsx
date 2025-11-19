@@ -16,34 +16,37 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
-  BarChart,
-  Bar,
 } from "recharts";
+
+// Types
+type TopicMetric = { topic: string; count: number };
+type LatencyData = { time: string; latency: number };
+type LatencyPoint = { timestamp: string; latency: number };
 
 export default function Home() {
   const { metrics, loading, error, resetMetrics } = useMetrics(1000);
-  const [chartData, setChartData] = useState<any[]>([]);
-  const [latencyData, setLatencyData] = useState<any[]>([]);
 
-  // Update charts when metrics change
+  const [chartData, setChartData] = useState<TopicMetric[]>([]);
+  const [latencyData, setLatencyData] = useState<LatencyData[]>([]);
+
   useEffect(() => {
     if (!metrics) return;
 
     // Bar chart for topic message counts
     const topicMetrics = metrics.topicMetrics || {};
-    const topics = Object.entries(topicMetrics).map(
-      ([topic, count]: [string, any]) => ({
+    const topics: TopicMetric[] = Object.entries(topicMetrics).map(
+      ([topic, count]) => ({
         topic,
-        count,
+        count: Number(count), // ensure it's a number
       })
     );
     setChartData(topics);
 
     // Line chart for latency over time
-    if (metrics.latencyHistory && metrics.latencyHistory.length > 0) {
-      const formattedLatency = metrics.latencyHistory
+    if (metrics.latencyHistory?.length) {
+      const formattedLatency: LatencyData[] = metrics.latencyHistory
         .slice(-20)
-        .map((point: any) => ({
+        .map((point: LatencyPoint) => ({
           time: new Date(point.timestamp).toLocaleTimeString(),
           latency: point.latency,
         }));
@@ -119,12 +122,11 @@ export default function Home() {
           />
         </div>
       )}
+
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-6">
-          {/* Topic Message Chart */}
           <TopicChart data={chartData} />
 
-          {/* Latency Trend Chart */}
           <div className="bg-neutral-900 p-4 rounded-2xl shadow-lg">
             <h2 className="text-lg font-semibold mb-2 text-cyan-300">
               Latency Over Time
@@ -153,11 +155,9 @@ export default function Home() {
             </ResponsiveContainer>
           </div>
 
-          {/* Live Logs */}
           <LiveLog />
         </div>
 
-        {/* Publish Panel */}
         <PublishPanel />
       </div>
     </main>

@@ -4,8 +4,8 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/janrusell-dev/brokerx/internal/broker"
-	"github.com/janrusell-dev/brokerx/internal/utils"
+	"github.com/brokerx/internal/broker"
+	"github.com/brokerx/internal/utils"
 )
 
 func StartSimulator(b *broker.Broker, m *MetricsService) {

@@ -1,9 +1,9 @@
 package routes
 
 import (
+	"github.com/brokerx/internal/broker"
+	"github.com/brokerx/internal/handlers"
 	"github.com/gin-gonic/gin"
-	"github.com/janrusell-dev/brokerx/internal/broker"
-	"github.com/janrusell-dev/brokerx/internal/handlers"
 )
 
 func RegisterTopicRoutes(r *gin.Engine, b *broker.Broker) {

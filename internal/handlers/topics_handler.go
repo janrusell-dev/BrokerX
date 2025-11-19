@@ -3,8 +3,8 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/brokerx/internal/broker"
 	"github.com/gin-gonic/gin"
-	"github.com/janrusell-dev/brokerx/internal/broker"
 )
 
 func GetTopicsHandler(b *broker.Broker) gin.HandlerFunc {

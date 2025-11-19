@@ -44,8 +44,7 @@ Real-time message broker built with **Go** and **Next.js**. BrokerX demonstrates
 ```
 brokerx/
 │
-├── cmd/
-│   └── server/
+├── server/
 │       └── main.go                 # Application entry point
 │
 ├── internal/
@@ -53,13 +52,13 @@ brokerx/
 │   │   └── broker.go              # Core message broker logic
 │   │
 │   ├── dto/
-│   │   └── publish_request.go     # Data transfer objects
+│   │   └── publish_dto.go          # Data transfer objects
 │   │
 │   ├── handlers/
 │   │   ├── publish_handler.go     # POST /publish
 │   │   ├── subscribe_handler.go   # GET /subscribe (WebSocket)
 │   │   ├── metrics_handler.go     # GET /metrics
-│   │   └── topic_handler.go       # GET /topics
+│   │   └── topics_handler.go    # GET /topics
 │   │
 │   ├── middleware/
 │   │   ├── cors.go                # CORS configuration
@@ -67,14 +66,21 @@ brokerx/
 │   │   └── recovery.go            # Panic recovery
 │   │
 │   ├── routes/
-│   │   └── router.go              # Route registration
+│   │   ├── routes.go            # Route registration
+|   |   ├── publish_route.go
+|   |   ├── subscribe_route.go
+|   |   ├── topics_route.go
+|   |   └── metrics_route.go  
 │   │
 │   ├── services/
-│   │   ├── metrics.go             # Metrics collection
-│   │   └── simulator.go           # Message simulator
+│   │   ├── metrics_service.go     # Metrics collection
+│   │   ├── simulator_service.go   # Message simulator
+|   |   └── topics_service.go 
 │   │
 │   └── utils/
-│       └── log.go                 # Logging utilities
+│       ├──log.go               # Logging utilities
+|       ├── generate_payload.go 
+|       └── response.go
 │
 ├── go.mod
 ├── go.sum

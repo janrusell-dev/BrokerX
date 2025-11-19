@@ -1,10 +1,10 @@
 package routes
 
 import (
+	"github.com/brokerx/internal/broker"
+	"github.com/brokerx/internal/middleware"
+	"github.com/brokerx/internal/services"
 	"github.com/gin-gonic/gin"
-	"github.com/janrusell-dev/brokerx/internal/broker"
-	"github.com/janrusell-dev/brokerx/internal/middleware"
-	"github.com/janrusell-dev/brokerx/internal/services"
 )
 
 func SetupRouter(b *broker.Broker, m *services.MetricsService) *gin.Engine {
@@ -24,7 +24,7 @@ func SetupRouter(b *broker.Broker, m *services.MetricsService) *gin.Engine {
 	RegisterTopicRoutes(r, b)
 
 	// Health check endpoint
-	r.GET("/", func(c *gin.Context) {
+	r.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"status":  "ok",
 			"service": "BrokerX",
