@@ -14,7 +14,7 @@ func main() {
 
 	//Initialize core services
 	messageBroker := broker.NewBroker()
-	metrics := services.NewMetricsService()
+	metrics := services.NewMetricsService(1000)
 
 	utils.LogSuccess("Broker and metrics service initialized")
 

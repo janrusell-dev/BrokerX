@@ -30,7 +30,7 @@ func PublishMessageHandler(b *broker.Broker, m *services.MetricsService) gin.Han
 		b.Publish(req.Topic, msg)
 		latency := time.Since(start).Microseconds()
 
-		m.RecordMessage(req.Topic, latency)
+		m.RecordMessage(req.Topic, latency, msg)
 		utils.LogEvent("Published message to topic: " + req.Topic)
 
 		ctx.JSON(http.StatusOK, gin.H{
