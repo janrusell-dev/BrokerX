@@ -39,55 +39,6 @@ Real-time message broker built with **Go** and **Next.js**. BrokerX demonstrates
                     └──────────┘ └───────┘ └───────┘
 ```
 
-## 📁 Project Structure
-
-```
-brokerx/
-│
-├── server/
-│       └── main.go                 # Application entry point
-│
-├── internal/
-│   ├── broker/
-│   │   └── broker.go              # Core message broker logic
-│   │
-│   ├── dto/
-│   │   └── publish_dto.go          # Data transfer objects
-│   │
-│   ├── handlers/
-│   │   ├── publish_handler.go     # POST /publish
-│   │   ├── subscribe_handler.go   # GET /subscribe (WebSocket)
-│   │   ├── metrics_handler.go     # GET /metrics
-│   │   └── topics_handler.go    # GET /topics
-│   │
-│   ├── middleware/
-│   │   ├── cors.go                # CORS configuration
-│   │   ├── logger.go              # Request logging
-│   │   └── recovery.go            # Panic recovery
-│   │
-│   ├── routes/
-│   │   ├── routes.go            # Route registration
-|   |   ├── publish_route.go
-|   |   ├── subscribe_route.go
-|   |   ├── topics_route.go
-|   |   └── metrics_route.go  
-│   │
-│   ├── services/
-│   │   ├── metrics_service.go     # Metrics collection
-│   │   ├── simulator_service.go   # Message simulator
-|   |   └── topics_service.go 
-│   │
-│   └── utils/
-│       ├──log.go               # Logging utilities
-|       ├── generate_payload.go 
-|       └── response.go
-│
-├── go.mod
-├── go.sum
-├── Dockerfile
-└── README.md
-```
-
 ## 🚦 Quick Start
 
 ### Prerequisites
@@ -99,7 +50,7 @@ brokerx/
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/brokerx.git
+git clone https://github.com/janrusell-dev/brokerx.git
 cd brokerx
 ```
 
@@ -110,7 +61,7 @@ go mod download
 
 3. **Run the server**
 ```bash
-go run cmd/server/main.go
+go run cmd/api/main.go
 ```
 
 The backend will start at `http://localhost:8080`
@@ -366,8 +317,6 @@ docker run -p 8080:8080 brokerx:latest
 
 ### Docker Compose (with Frontend)
 ```yaml
-version: '3.8'
-
 services:
   backend:
     build: .
@@ -438,7 +387,7 @@ LOG_LEVEL=info
 
 **Change latency history size:**
 ```go
-// internal/services/metrics.go
+// internal/services/metrics_service.go
 const maxLatencyHistory = 100 // Adjust as needed
 ```
 

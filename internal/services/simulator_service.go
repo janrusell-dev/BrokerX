@@ -32,7 +32,7 @@ func StartSimulator(b *broker.Broker, m *MetricsService) {
 		b.Publish(topic, msg)
 		latency := time.Since(start).Microseconds()
 		// Record metrics
-		m.RecordMessage(topic, latency)
+		m.RecordMessage(topic, latency, msg)
 
 		time.Sleep(time.Millisecond * 500)
 	}

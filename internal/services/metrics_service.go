@@ -3,6 +3,8 @@ package services
 import (
 	"sync"
 	"time"
+
+	"github.com/brokerx/internal/broker"
 )
 
 type Metrics struct {
@@ -15,24 +17,38 @@ type Metrics struct {
 }
 
 type MetricsService struct {
-	mu        sync.Mutex
-	data      Metrics
-	startTime time.Time
+	mu           sync.Mutex
+	data         Metrics
+	startTime    time.Time
+	maxMessages  int
+	messageQueue []broker.Message
 }
 
-func NewMetricsService() *MetricsService {
+func NewMetricsService(maxMessages int) *MetricsService {
 	return &MetricsService{
 		data: Metrics{
 			MessagePerTopic: make(map[string]int),
 			LastReset:       time.Now(),
 		},
-		startTime: time.Now(),
+		startTime:   time.Now(),
+		maxMessages: maxMessages,
 	}
 }
 
-func (m *MetricsService) RecordMessage(topic string, latencyMs int64) {
+func (m *MetricsService) RecordMessage(topic string, latencyMs int64, msg broker.Message) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
+
+	m.messageQueue = append(m.messageQueue, msg)
+	if len(m.messageQueue) > m.maxMessages {
+		oldMsg := m.messageQueue[0]
+		m.messageQueue = m.messageQueue[1:]
+
+		if m.data.MessagePerTopic[oldMsg.Topic] > 0 {
+			m.data.MessagePerTopic[oldMsg.Topic]--
+		}
+		m.data.TotalMessages--
+	}
 
 	m.data.TotalMessages++
 	m.data.MessagePerTopic[topic]++
