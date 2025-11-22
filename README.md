@@ -5,6 +5,7 @@ Real-time message broker built with **Go** and **Next.js**. BrokerX demonstrates
 ## ✨ Features
 
 ### Backend (Go)
+
 - **Topic-based message routing** - Publish/Subscribe pattern
 - **WebSocket subscriptions** - Real-time message delivery
 - **Concurrent-safe operations** - Using Go's sync primitives
@@ -14,6 +15,7 @@ Real-time message broker built with **Go** and **Next.js**. BrokerX demonstrates
 - **Graceful cleanup** - Proper resource management for connections and channels
 
 ### Frontend (Next.js)
+
 - **Real-time dashboard** - Live metrics visualization
 - **Message feed** - View published messages in real-time
 - **Latency charts** - Visual representation of system performance
@@ -42,6 +44,7 @@ Real-time message broker built with **Go** and **Next.js**. BrokerX demonstrates
 ## 🚦 Quick Start
 
 ### Prerequisites
+
 - Go 1.21 or higher
 - Node.js 18+ (for frontend)
 - Git
@@ -49,17 +52,20 @@ Real-time message broker built with **Go** and **Next.js**. BrokerX demonstrates
 ### Backend Setup
 
 1. **Clone the repository**
+
 ```bash
 git clone https://github.com/janrusell-dev/brokerx.git
 cd brokerx
 ```
 
 2. **Install Go dependencies**
+
 ```bash
 go mod download
 ```
 
 3. **Run the server**
+
 ```bash
 go run cmd/api/main.go
 ```
@@ -69,11 +75,13 @@ The backend will start at `http://localhost:8080`
 ### Frontend Setup
 
 1. **Navigate to frontend directory**
+
 ```bash
 cd frontend
 ```
 
 2. **Install dependencies**
+
 ```bash
 npm install
 # or
@@ -81,6 +89,7 @@ yarn install
 ```
 
 3. **Start development server**
+
 ```bash
 npm run dev
 # or
@@ -92,6 +101,7 @@ The frontend will start at `http://localhost:3000`
 ## 📡 API Endpoints
 
 ### Publish Message
+
 ```bash
 POST /publish
 Content-Type: application/json
@@ -107,6 +117,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -117,12 +128,14 @@ Content-Type: application/json
 ```
 
 ### Subscribe to Topic (WebSocket)
+
 ```bash
 GET /subscribe?topic=orders
 Upgrade: websocket
 ```
 
 **Receives messages:**
+
 ```json
 {
   "topic": "orders",
@@ -136,11 +149,13 @@ Upgrade: websocket
 ```
 
 ### Get Metrics
+
 ```bash
 GET /metrics
 ```
 
 **Response:**
+
 ```json
 {
   "totalMessages": 1523,
@@ -152,25 +167,23 @@ GET /metrics
     "orders": {
       "messageCount": 450,
       "avgLatency": 2
-    },
-    "users": {
-      "messageCount": 320,
-      "avgLatency": 4
     }
   },
   "latencyHistory": [
-    {"timestamp": "2025-10-11T10:30:00Z", "latency": 3},
-    {"timestamp": "2025-10-11T10:30:01Z", "latency": 2}
+    { "timestamp": "2025-10-11T10:30:00Z", "latency": 3 },
+    { "timestamp": "2025-10-11T10:30:01Z", "latency": 2 }
   ]
 }
 ```
 
 ### List Topics
+
 ```bash
 GET /topics
 ```
 
 **Response:**
+
 ```json
 {
   "topics": ["orders", "users", "payments"]
@@ -178,11 +191,13 @@ GET /topics
 ```
 
 ### Get Topic Information
+
 ```bash
 GET /topics/orders
 ```
 
 **Response:**
+
 ```json
 {
   "exists": true,
@@ -193,11 +208,13 @@ GET /topics/orders
 ```
 
 ### Get All Topics Info
+
 ```bash
 GET /topics/info/all
 ```
 
 **Response:**
+
 ```json
 {
   "topics": [
@@ -218,11 +235,13 @@ GET /topics/info/all
 ```
 
 ### Reset Metrics
+
 ```bash
 POST /metrics/reset
 ```
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -231,11 +250,13 @@ POST /metrics/reset
 ```
 
 ### Health Check
+
 ```bash
 GET /health
 ```
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -248,6 +269,7 @@ GET /health
 ### Using cURL
 
 **Publish a message:**
+
 ```bash
 curl -X POST http://localhost:8080/publish \
   -H "Content-Type: application/json" \
@@ -261,11 +283,13 @@ curl -X POST http://localhost:8080/publish \
 ```
 
 **Get metrics:**
+
 ```bash
 curl http://localhost:8080/metrics
 ```
 
 **List topics:**
+
 ```bash
 curl http://localhost:8080/topics
 ```
@@ -284,38 +308,41 @@ wscat -c "ws://localhost:8080/subscribe?topic=test"
 
 ```javascript
 // Subscribe to messages
-const ws = new WebSocket('ws://localhost:8080/subscribe?topic=orders');
+const ws = new WebSocket("ws://localhost:8080/subscribe?topic=orders");
 
 ws.onmessage = (event) => {
   const message = JSON.parse(event.data);
-  console.log('Received:', message);
+  console.log("Received:", message);
 };
 
 // Publish a message
-fetch('http://localhost:8080/publish', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+fetch("http://localhost:8080/publish", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-    topic: 'orders',
-    sender: 'web-client',
-    payload: { orderId: '12345', status: 'shipped' }
-  })
+    topic: "orders",
+    sender: "web-client",
+    payload: { orderId: "12345", status: "shipped" },
+  }),
 });
 ```
 
 ## 🐳 Docker Deployment
 
 ### Build Image
+
 ```bash
 docker build -t brokerx:latest .
 ```
 
 ### Run Container
+
 ```bash
 docker run -p 8080:8080 brokerx:latest
 ```
 
 ### Docker Compose (with Frontend)
+
 ```yaml
 services:
   backend:
@@ -338,6 +365,7 @@ services:
 ```
 
 Run with:
+
 ```bash
 docker-compose up -d
 ```
@@ -345,26 +373,31 @@ docker-compose up -d
 ## 🎯 Key Concepts Demonstrated
 
 ### 1. **Concurrency Safety**
+
 - Uses `sync.RWMutex` for thread-safe operations
 - Goroutines for handling multiple subscribers
 - Buffered channels to prevent blocking
 
 ### 2. **WebSocket Communication**
+
 - Real-time bidirectional communication
 - Automatic connection management
 - Graceful disconnection handling
 
 ### 3. **Clean Architecture**
+
 - Separation of concerns (handlers, services, broker)
 - Dependency injection
 - Middleware pattern
 
 ### 4. **Performance Optimization**
+
 - Non-blocking message delivery
 - Efficient metrics collection
 - Rolling latency history (limited buffer)
 
 ### 5. **Observability**
+
 - Real-time metrics
 - Request logging with color-coded output
 - Latency tracking per topic
@@ -372,6 +405,7 @@ docker-compose up -d
 ## 🔧 Configuration
 
 ### Environment Variables
+
 ```bash
 # Server port (default: 8080)
 PORT=8080
@@ -386,18 +420,21 @@ LOG_LEVEL=info
 ### Customization
 
 **Change latency history size:**
+
 ```go
 // internal/services/metrics_service.go
 const maxLatencyHistory = 100 // Adjust as needed
 ```
 
 **Adjust channel buffer size:**
+
 ```go
 // internal/broker/broker.go
 ch := make(chan Message, 100) // Increase for high throughput
 ```
 
 **Configure WebSocket settings:**
+
 ```go
 // internal/handlers/subscribe_handler.go
 var upgrader = websocket.Upgrader{
@@ -428,7 +465,7 @@ For production use, consider adding:
 9. **Monitoring**: Prometheus + Grafana
 10. **Message encryption**: TLS for WebSocket connections -->
 
-## 🤝 Contributing 
+## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -449,5 +486,3 @@ Built with ❤️ by Jan Rusell
 ---
 
 **Note**: This is a demo/educational project. For production message brokers, consider using established solutions like RabbitMQ, Apache Kafka, or NATS.
-
-

@@ -17,6 +17,11 @@ func NewMetricsHandler(s *services.MetricsService) *MetricsHandler {
 }
 
 func (h *MetricsHandler) GetMetricsHandler(c *gin.Context) {
+	if h.Service == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Metrics service not available"})
+		return
+	}
+
 	metrics := h.Service.GetMetrics()
 	uptime := time.Since(metrics.LastReset).Seconds()
 	rate := h.Service.MessageRate()

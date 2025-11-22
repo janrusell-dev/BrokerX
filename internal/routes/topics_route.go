@@ -8,7 +8,7 @@ import (
 
 func RegisterTopicRoutes(r *gin.Engine, b *broker.Broker) {
 	topicsGroup := r.Group("/topics")
-	topicsGroup.GET("/topics", handlers.GetTopicsHandler(b))
-	topicsGroup.GET("/topics/:topic", handlers.GetTopicInfoHandler(b))
-	topicsGroup.GET("/topics/info/all", handlers.GetAllTopicsInfoHandler(b))
+	topicsGroup.GET("", handlers.GetTopicsHandler(b))
+	topicsGroup.GET("/:topic", handlers.GetTopicInfoHandler(b))
+	topicsGroup.GET("/info/all", handlers.GetAllTopicsInfoHandler(b))
 }
