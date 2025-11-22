@@ -14,9 +14,11 @@ type Message struct {
 }
 
 type Broker struct {
-	mu         sync.RWMutex
-	topics     map[string][]chan Message
-	topicStats map[string]*TopicStats
+	mu            sync.RWMutex
+	topics        map[string][]chan Message
+	topicStats    map[string]*TopicStats
+	knownTopics   map[string]struct{}
+	totalMessages int64
 }
 
 type TopicStats struct {
@@ -26,18 +28,31 @@ type TopicStats struct {
 
 func NewBroker() *Broker {
 	return &Broker{
-		topics:     make(map[string][]chan Message),
-		topicStats: make(map[string]*TopicStats),
+		topics:      make(map[string][]chan Message),
+		topicStats:  make(map[string]*TopicStats),
+		knownTopics: make(map[string]struct{}),
 	}
 }
 
 // Publish sends a message to all subscribers of a topic
 func (b *Broker) Publish(topic string, msg Message) {
+	b.mu.Lock()
+	b.knownTopics[topic] = struct{}{}
+	b.mu.Unlock()
+
 	b.mu.RLock()
 	subscribers, exists := b.topics[topic]
 	b.mu.RUnlock()
 
 	if !exists || len(subscribers) == 0 {
+		b.mu.Lock()
+		if b.topicStats[topic] == nil {
+			b.topicStats[topic] = &TopicStats{}
+		}
+		b.topicStats[topic].MessageCount++
+		b.topicStats[topic].LastPublished = time.Now()
+		b.totalMessages++
+		b.mu.Unlock()
 		return
 	}
 
@@ -48,6 +63,7 @@ func (b *Broker) Publish(topic string, msg Message) {
 	}
 	b.topicStats[topic].MessageCount++
 	b.topicStats[topic].LastPublished = time.Now()
+	b.totalMessages++
 	b.mu.Unlock()
 
 	// Broadcast to all subscribers (non-blocking)
@@ -105,8 +121,8 @@ func (b *Broker) GetTopics() []string {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 
-	topics := make([]string, 0, len(b.topics))
-	for topic := range b.topics {
+	topics := make([]string, 0, len(b.knownTopics))
+	for topic := range b.knownTopics {
 		topics = append(topics, topic)
 	}
 	return topics
@@ -146,7 +162,7 @@ func (b *Broker) GetAllTopicsInfo() []map[string]interface{} {
 
 	result := make([]map[string]interface{}, 0, len(b.topics))
 
-	for topic := range b.topics {
+	for topic := range b.knownTopics {
 		info := map[string]interface{}{
 			"topic":         topic,
 			"subscribers":   len(b.topics[topic]),

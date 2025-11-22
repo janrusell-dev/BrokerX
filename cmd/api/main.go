@@ -14,7 +14,7 @@ func main() {
 
 	//Initialize core services
 	messageBroker := broker.NewBroker()
-	metrics := services.NewMetricsService(1000)
+	metrics := services.NewMetricsService(5000)
 
 	utils.LogSuccess("Broker and metrics service initialized")
 
@@ -22,7 +22,9 @@ func main() {
 	r := routes.SetupRouter(messageBroker, metrics)
 
 	// Start message simulator in background
-	go services.StartSimulator(messageBroker, metrics)
+	sim := services.NewSimulator(messageBroker, metrics)
+	sim.Start()
+	sim.Stop()
 	utils.LogInfo("Message simulator started")
 
 	// Print startup banner

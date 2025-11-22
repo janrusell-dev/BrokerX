@@ -92,7 +92,6 @@ func (m *MetricsService) ResetMetrics() {
 	m.data.TotalMessages = 0
 	m.data.AvgLatency = 0
 	m.data.MessagePerTopic = make(map[string]int)
-	m.data.ActiveSubscribers = 0
 	m.data.LatencyHistory = []map[string]interface{}{}
 	m.data.LastReset = time.Now()
 }

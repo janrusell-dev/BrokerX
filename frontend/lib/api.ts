@@ -96,6 +96,40 @@ class BrokerXAPI {
         return response.json()
     }
 
+    async startSimulator(): Promise<{ status: string; message: string;}> {
+        const response = await fetch(`${this.baseUrl}/simulator/start`, {
+            method: "POST",
+        });
+
+        if (!response.ok){
+            throw new Error(`Failed to start simulator: ${response.statusText}`)
+        }
+
+        return response.json();
+    }
+
+    async stopSimulator(): Promise<{ status: string; message: string;}> {
+        const response = await fetch(`${this.baseUrl}/simulator/stop`, {
+            method: "POST",
+        });
+
+        if (!response.ok){
+            throw new Error(`Failed to stop simulator: ${response.statusText}`)
+        }
+        
+        return response.json();
+    }
+    
+    async getSimulatorStatus(): Promise<{ running: boolean; }> {
+        const response = await fetch(`${this.baseUrl}/simulator/status`);
+
+        if (!response.ok){
+            throw new Error(`Failed to get simulator status: ${response.statusText}`);
+        }
+
+        return response.json();
+    }
+    
     async health(): Promise<{ status: string; service: string}> {
         const response = await fetch(`${this.baseUrl}/health`);
 
