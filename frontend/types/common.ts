@@ -4,9 +4,9 @@ export interface PublishRequest {
     payload: Record<string, MessagePayload>;
 }
 
-interface MessagePayload {
-  temperature: number;
-  status: string;
+export interface MessagePayload {
+  message: string;
+  timestamp: string;
 }
 
 export interface SimulatorStatus {
