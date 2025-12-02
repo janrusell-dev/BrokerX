@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"log"
+
 	"github.com/brokerx/internal/broker"
 	"github.com/brokerx/internal/middleware"
 	"github.com/brokerx/internal/services"
@@ -9,7 +11,9 @@ import (
 
 func SetupRouter(b *broker.Broker, m *services.MetricsService) *gin.Engine {
 	r := gin.New()
-	r.SetTrustedProxies([]string{"127.0.0.1"})
+	if err := r.SetTrustedProxies([]string{"127.0.0.1"}); err != nil {
+		log.Printf("warning: failed to set trusted proxies %v", err)
+	}
 
 	r.Use(
 		middleware.Recovery(),

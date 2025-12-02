@@ -21,8 +21,10 @@ export function PublishPanel() {
         topic,
         sender,
         payload: {
-          message: message,
-          timestamp: new Date().toISOString(),
+          default: {
+            message: message,
+            timestamp: new Date().toISOString(),
+          },
         },
       });
 
