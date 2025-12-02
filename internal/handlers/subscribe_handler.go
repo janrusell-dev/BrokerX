@@ -32,7 +32,11 @@ func SubscribeHandler(b *broker.Broker, m *services.MetricsService) gin.HandlerF
 			utils.LogError("WebSocket upgrade failed", err)
 			return
 		}
-		defer conn.Close()
+		defer func() {
+			if err := conn.Close(); err != nil {
+				utils.LogError("Failed to close WebSocket connection", err)
+			}
+		}()
 
 		ch := b.Subscribe(topic)
 		defer b.Unsubscribe(topic, ch)
