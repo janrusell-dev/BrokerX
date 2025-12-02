@@ -1,8 +1,9 @@
 import { api } from "@/lib/api";
+import { TopicInfo } from "@/types/common";
 import { useEffect, useState } from "react";
 
 export function useTopicInfo(topic: string | null) {
-  const [info, setInfo] = useState<any>(null);
+  const [info, setInfo] = useState<TopicInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
