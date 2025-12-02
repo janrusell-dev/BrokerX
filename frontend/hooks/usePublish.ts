@@ -1,11 +1,13 @@
 import { api } from "@/lib/api";
-import { PublishRequest } from "@/types/common";
+import { PublishRequest, PublishResponse } from "@/types/common";
 import { useCallback, useState } from "react";
+
+
 
 export function usePublish() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
-    const [lastResponse, setLastResponse] = useState<any>(null);
+    const [lastResponse, setLastResponse] = useState<PublishResponse | null>(null);
 
     const publish = useCallback(async (request: PublishRequest) => {
         setLoading(true);

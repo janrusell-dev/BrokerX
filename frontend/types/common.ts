@@ -1,7 +1,16 @@
 export interface PublishRequest {
     topic: string;
     sender: string;
-    payload: Record<string, any>;
+    payload: Record<string, MessagePayload>;
+}
+
+interface MessagePayload {
+  temperature: number;
+  status: string;
+}
+
+export interface SimulatorStatus {
+    running: boolean;
 }
 
 export interface PublishResponse {
@@ -34,7 +43,7 @@ export interface LatencyPoint{
 export interface Message{
     topic: string;
     sender: string;
-    payload: Record<string, any>;
+    payload: Record<string, MessagePayload>;
     timestamp: string;
 }
 

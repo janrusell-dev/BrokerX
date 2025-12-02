@@ -1,44 +1,57 @@
-import {api} from "@/lib/api";
+import { api } from "@/lib/api";
+import { SimulatorStatus } from "@/types/common";
 import { useEffect, useState } from "react";
 
 export function useSimulator() {
-    const [isSimRunning, setIsSimRunning] = useState<boolean | null>(null);
-    const [error, setError] = useState<Error | null>(null);
-    const [loading, setLoading] = useState(false);  
-    
-     useEffect(() => {
+  const [isSimRunning, setIsSimRunning] = useState<boolean | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
     const fetchStatus = async () => {
       try {
-        const res = await api.getSimulatorStatus();
+        const res: SimulatorStatus = await api.getSimulatorStatus();
         setIsSimRunning(res.running);
-      } catch (err: any) {
-        setError(err.message || "Failed to fetch simulator status");
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err);
+        } else {
+          setError(new Error("Failed to fetch simulator status"));
+        }
       }
     };
     fetchStatus();
   }, []);
 
-    const startSimulator = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            await api.startSimulator();
-            setIsSimRunning(true);
-        } catch (err: any) {
-            setError(err.message || "Failed to start simulator");
-        } finally {
-            setLoading(false);
-        }
+  const startSimulator = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      await api.startSimulator();
+      setIsSimRunning(true);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err);
+      } else {
+        setError(new Error("Failed to start simulator"));
+      }
+    } finally {
+      setLoading(false);
     }
-      const stopSimulator = async () => {
+  };
+
+  const stopSimulator = async () => {
     setLoading(true);
     setError(null);
     try {
       await api.stopSimulator();
       setIsSimRunning(false);
-    } catch (err: any) {
-      console.error(err);
-      setError(err.message || "Failed to stop simulator");
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err);
+      } else {
+        setError(new Error("Failed to stop simulator"));
+      }
     } finally {
       setLoading(false);
     }
@@ -55,4 +68,4 @@ export function useSimulator() {
   };
 
   return { isSimRunning, loading, error, startSimulator, stopSimulator, toggleSimulator };
- }
+}
